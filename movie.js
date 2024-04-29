@@ -8,7 +8,7 @@ const options = {
 };
 
 const $movie_list = document.querySelector('.movie_list');
-const $serach_form = document.getElementById('serach_form');
+const $search_form = document.getElementById('search_form');
 
 // 영화 데이터 가져오기
 fetch(
@@ -21,7 +21,7 @@ fetch(
 
         let temp_html = ``;
         movie_list.forEach((v) => {
-            const img_url = `https://image.tmdb.org/t/p/w500${v['backdrop_path']}`;
+            const img_url = `https://image.tmdb.org/t/p/w500${v['poster_path']}`;
             const movie_title = v['title'];
             const overview = v['overview'];
             const vote = v['vote_average'];
@@ -42,24 +42,24 @@ fetch(
         });
     });
 
-// 검색 기능
-function serach_btn() {
-    const $serach_input = document.getElementById('serach_input').value;
+// 검색
+function search_btn() {
+    const $search_input = document.getElementById('search_input').value;
     const $movie_card_arr = document.getElementsByClassName('movie_card');
 
-    if (!$serach_input) {
+    if (!$search_input) {
         alert('영화 제목을 입력하세요!');
     } else {
-        // 전체 영화 제목을 담을 배열
+        // 영화 제목 배열
         let movie_title_arr = [];
         for (let i = 0; i < $movie_card_arr.length; i++) {
             movie_title_arr[i] =
                 $movie_card_arr[i].getElementsByTagName('h3')[0].textContent;
             $movie_card_arr[i].style = 'display:none';
         }
-        // 키워드가 들어간 영화 제목을 담을 배열
+        // 영화 제목 배열 - 키워드
         let filter_movie_title = movie_title_arr.filter(
-            (v) => v.toLowerCase().indexOf($serach_input.toLowerCase()) > -1
+            (v) => v.toLowerCase().indexOf($search_input.toLowerCase()) > -1
         );
 
         movie_title_arr.forEach((v, i) => {
@@ -72,8 +72,19 @@ function serach_btn() {
     }
 }
 
-// 새로고침 문제 보완
+// // 장르 버튼 클릭 이벤트 핸들러
+// document.querySelectorAll('.genre-btn').forEach(button => ){
+//     button.addEventListener('click', () => ){
+//         const genreId = button.getAttribute('data-genre-id');
+//         se
+//     }
+// }
+
+
+
+
+// 새로고침 문제 
 function onSubmit(event) {
-    event.preventDefault(); // 브라우저의 기본 동작을 제어
+    event.preventDefault(); // 브라우저 기본 동작 제어
 }
-$serach_form.addEventListener('submit', onSubmit);
+$search_form.addEventListener('submit', onSubmit);

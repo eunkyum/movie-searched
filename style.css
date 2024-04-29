@@ -12,7 +12,7 @@ body {
 
 header {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     padding: 20px 0px;
     margin: 0 auto;
@@ -42,8 +42,9 @@ form {
 
 .serach {
     display: flex;
-    justify-content: center;
-    padding: 20px 0px;
+    position: sticky;
+    justify-content: flex-end;
+    padding: 15px 0px;
     height: 80px;
 }
 
@@ -54,24 +55,26 @@ form {
 
 .serach>input {
     margin: 0px 10px;
-    width: 300px;
+    width: 500px;
     padding: 10px;
     float: left;
     font-size: 20px;
     line-height: 30px;
+    border-radius: 20px;
+    background-color: white;
 }
 
 .serach>button {
     position: relative;
     border: none;
 
-    padding: 15px 30px;
+    padding: 15px 15px;
     border-radius: 15px;
     /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); */
     text-decoration: none;
     transition: 0.25s;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    background-color: transparent;
+    /* color: white; */
     font-size: 20px;
     display: flex;
     text-align: center;
@@ -79,9 +82,10 @@ form {
     justify-content: center;
 }
 
-.serach>button:hover {
-    letter-spacing: 2px;
-    transform: scale(1.2);
+/* 마우스 올렸을때 효과 */
+.serach>button:focus {
+    letter-spacing: 5px;
+    transform: scale(1.0);
     cursor: pointer;
 }
 
