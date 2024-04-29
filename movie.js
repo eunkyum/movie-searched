@@ -72,19 +72,42 @@ function search_btn() {
     }
 }
 
-// // 장르 버튼 클릭 이벤트 핸들러
-// document.querySelectorAll('.genre-btn').forEach(button => ){
-//     button.addEventListener('click', () => ){
-//         const genreId = button.getAttribute('data-genre-id');
-//         se
-//     }
-// }
+// 장르 버튼 클릭 이벤트 핸들러
+document.querySelectorAll('.genre-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        const genreId = button.getAttribute('data-genre-id');
+        searchMoviesByGenre(genreId);
+    });
+});
 
+// API 활용 - 장르별 영화 검색 함수
+function searchMoviesByGenre(genreId) {
+    const options = {
+        method: 'GET',
+        headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzk4ODExYTdkMTQ2YzcyNWIzYWQyZjRkNTdjNjZmMCIsInN1YiI6IjY2MmE2MzcxOGQ3N2M0MDA5YjJkYjQ5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vH_XqCfQGC1kpbDp8A2jzppncFJxl8q99-2xGXeoaq8'
+        }
+    };
 
-
-
-// 새로고침 문제 
-function onSubmit(event) {
-    event.preventDefault(); // 브라우저 기본 동작 제어
+    fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
+        .then(response => response.json())
+        .then(response => console.log(response))
+        .catch(err => console.error(err));
 }
-$search_form.addEventListener('submit', onSubmit);
+
+// 내배캠 시네마 로고 클릭시 홈 이동
+function goToMainHome() {
+    location.href = '/index.html'
+}
+
+// 내배캠 시네마 로고 클릭시 이벤트 핸들러 추가
+document.querySelector('header h1').addEventListener('click', goToMainHome)
+
+
+
+// // 새로고침 문제
+// function onSubmit(event) {
+//     event.preventDefault(); // 브라우저 기본 동작 제어
+// }
+// $search_form.addEventListener('submit', onSubmit);

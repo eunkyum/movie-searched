@@ -19,11 +19,23 @@
     </header>
 
 
-    <form id="serach_form" class="serach">
+    <form id="search_form" class="search">
         <label></label>
-        <input type="text" id="serach_input" placeholder="검색">
-        <button type="submit" onclick=serach_btn()>🔍</i></button>
+        <div class="search_div">
+            <input type="text" id="search_input" placeholder="검색">
+            <button type="submit" onclick=search_btn()>🔍</i></button>
+        </div>
     </form>
+
+    <div>
+        <div class="genre-buttons">
+            <button class="genre-btn" data-genre-id="28">액션</button>
+            <button class="genre-btn" data-genre-id="27">공포</button>
+            <button class="genre-btn" data-genre-id="35">코미디</button>
+            <button class="genre-btn" data-genre-id="16">애니매이션</button>
+        </div>
+    </div>
+
     <main class="movie_list">
 
     </main>
