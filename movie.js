@@ -42,39 +42,26 @@ fetch(
         });
     });
 
-// 검색
-function search_btn() {
-    const $search_input = document.getElementById('search_input').value;
-    const $movie_card_arr = document.getElementsByClassName('movie_card');
+// 검색 버튼 클릭 이벤트 핸들러
+document.getElementById('search_form').addEventListener('submit', function (event) {
+    event.preventDefault(); // 기본 동작 제어
 
-    if (!$search_input) {
-        alert('영화 제목을 입력하세요!');
-    } else {
-        // 영화 제목 배열
-        let movie_title_arr = [];
-        for (let i = 0; i < $movie_card_arr.length; i++) {
-            movie_title_arr[i] =
-                $movie_card_arr[i].getElementsByTagName('h3')[0].textContent;
-            $movie_card_arr[i].style = 'display:none';
+    const searchInput = document.getElementById('search_input').value.trim().toLowerCase();
+    const movieCards = document.querySelectorAll('.movie_card');
+
+    movieCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.trim().toLowerCase();
+        if (title.includes(searchInput)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
         }
-        // 영화 제목 배열 - 키워드
-        let filter_movie_title = movie_title_arr.filter(
-            (v) => v.toLowerCase().indexOf($search_input.toLowerCase()) > -1
-        );
-
-        movie_title_arr.forEach((v, i) => {
-            for (let j = 0; j < filter_movie_title.length; j++) {
-                if (v === filter_movie_title[j]) {
-                    $movie_card_arr[i].style = 'display:block';
-                }
-            }
-        });
-    }
-}
+    });
+});
 
 // 장르 버튼 클릭 이벤트 핸들러
 document.querySelectorAll('.genre-btn').forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', function () {
         const genreId = button.getAttribute('data-genre-id');
         searchMoviesByGenre(genreId);
     });
@@ -90,24 +77,37 @@ function searchMoviesByGenre(genreId) {
         }
     };
 
-    fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
+    fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}`, options)
         .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
+        .then(data => {
+            const movieList = data.results;
+            const $movieList = document.querySelector('.movie_list');
+            let html = '';
+
+            movieList.forEach(movie => {
+                const imgURL = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+                const title = movie.title;
+                const overview = movie.overview;
+                const vote = movie.vote_average;
+
+                html += `
+                    <div class="movie_card" onclick="alert('영화 id: ${movie.id}')">
+                        <img src="${imgURL}" alt="${title}">
+                        <div class="overlay">
+                            <h3>${title}</h3>
+                            <p>${overview}</p>
+                            <p>⭐ ${vote.toFixed(1)}</p>
+                        </div>
+                    </div>`;
+            });
+
+            $movieList.innerHTML = html;
+        })
+        .catch(error => console.error('Error fetching movies by genre:', error));
 }
 
-// 내배캠 시네마 로고 클릭시 홈 이동
-function goToMainHome() {
-    location.href = '/index.html'
-}
-
-// 내배캠 시네마 로고 클릭시 이벤트 핸들러 추가
-document.querySelector('header h1').addEventListener('click', goToMainHome)
-
-
-
-// // 새로고침 문제
-// function onSubmit(event) {
-//     event.preventDefault(); // 브라우저 기본 동작 제어
-// }
-// $search_form.addEventListener('submit', onSubmit);
+// 내배캠 플러스 로고 클릭시 홈 이동
+document.querySelector('.title_style a').addEventListener('click', function (event) {
+    event.preventDefault();
+    location.href = '/index.html';
+});
